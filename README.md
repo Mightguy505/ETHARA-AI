@@ -133,4 +133,4 @@ npm run lint
 - `DELETE /api/employees/{id}` - Delete employee
 - `GET /api/attendance` - Get all attendance records
 - `POST /api/attendance` - Mark attendance
-- `GET /api/stats` - Get dashboard stats
+- `GET /api/stats` - Get dashboard statss
