@@ -13,25 +13,38 @@ const Dashboard = () => {
     }, []);
 
     const fetchDashboardData = async () => {
-        try {
-            setLoading(true);
-            setError('');
-        
-            const[statsRes, employeesRes, attendanceRes] = await Promise.all([
-                getStats(),
-                getEmployees(),
-                getAllAttendance()
-            ]);
-            setStats(statsRes.data);
-            setRecentEmployees(employeesRes.data.slice(0,5));
-            setRecentAttendance(attendanceRes.data.slice(0,10));
-        } catch (err) {
-            setError('Failed to fetch dashboard data: ' + err.message);
-            console.error(error);
-        } finally {
-            setLoading(false);
+    try {
+        setLoading(true);
+        setError('');
+
+        const results = await Promise.allSettled([
+            getStats(),
+            getEmployees(),
+            getAllAttendance()
+        ]);
+
+        if (results[0].status === 'fulfilled') {
+            setStats(results[0].value.data);
         }
-    };
+
+        if (results[1].status === 'fulfilled') {
+            setRecentEmployees(results[1].value.data.slice(0, 5));
+        }
+
+        if (results[2].status === 'fulfilled') {
+            setRecentAttendance(results[2].value.data.slice(0, 10));
+        }
+
+        if (results.some(r => r.status === 'rejected')) {
+            setError('Some dashboard data failed to load');
+            console.error(results);
+        }
+
+    } finally {
+        setLoading(false);
+    }
+};
+
     
     if(loading){
         return(
