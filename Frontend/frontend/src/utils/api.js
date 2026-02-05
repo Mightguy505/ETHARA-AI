@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || 'https://ethara-ai-s48k.vercel.app';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -10,26 +10,26 @@ const api = axios.create({
 });
 
 // Employee APIs
-export const getEmployees = () => api.get('/api/employees');
-export const getEmployee = (id) => api.get(`/api/employees/${id}`);
-export const createEmployee = (data) => api.post('/api/employees', data);
-export const deleteEmployee = (id) => api.delete(`/api/employees/${id}`);
+export const getEmployees = () => api.get(`${API_URL}/api/employees`);
+export const getEmployee = (id) => api.get(`${API_URL}/api/employees/${id}`);
+export const createEmployee = (data) => api.post(`${API_URL}/api/employees`, data);
+export const deleteEmployee = (id) => api.delete(`${API_URL}/api/employees/${id}`);
 
 // Attendance APIs
-export const getAllAttendance = () => api.get('/api/attendance');
+export const getAllAttendance = () => api.get(`${API_URL}/api/attendance`);
 export const getEmployeeAttendance = (employeeId, date = null) => {
     const url = date 
-        ? `/api/attendance/${employeeId}?date=${date}`
-        : `/api/attendance/${employeeId}`;
+        ? `${API_URL}/api/attendance/${employeeId}?date=${date}`
+        : `${API_URL}/api/attendance/${employeeId}`;
     return api.get(url);
 };
 
-export const markAttendance = (data) => api.post('/api/attendance', data);
+export const markAttendance = (data) => api.post(`${API_URL}/api/attendance`, data);
 
 // Stats API
-export const getStats = () => api.get('/api/stats');
+export const getStats = () => api.get(`${API_URL}/api/stats`);
 
 // Health check
-export const healthCheck = () => api.get('/api/health');
+export const healthCheck = () => api.get(`${API_URL}/api/health`);
 
 export default api;
