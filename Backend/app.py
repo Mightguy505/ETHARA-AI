@@ -8,6 +8,7 @@ from mysql.connector import Error
 import os
 from contextlib import contextmanager
 import logging
+from urllib.parse import urlparse
 
 # ------------------ APP SETUP ------------------
 
@@ -33,13 +34,19 @@ logging.basicConfig(
 
 # ------------------ DATABASE CONFIG ------------------
 # ⚠️ NO localhost defaults in production
+DATABASE_URL = os.getenv("MYSQL_PUBLIC_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError("MYSQL_PUBLIC_URL is not set")
+
+parsed = urlparse(DATABASE_URL)
 
 DB_CONFIG = {
-    "host": os.getenv("MYSQLHOST"),
-    "port": int(os.getenv("MYSQLPORT", 3306)),
-    "user": os.getenv("MYSQLUSER"),
-    "password": os.getenv("MYSQLPASSWORD"),
-    "database": os.getenv("MYSQLDATABASE"),
+    "host": parsed.hostname,
+    "port": parsed.port or 3306,
+    "user": parsed.username,
+    "password": parsed.password,
+    "database": parsed.path.lstrip("/"),
 }
 
 
