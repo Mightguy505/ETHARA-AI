@@ -25,15 +25,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ------------------ LOGGING ------------------
+# LOGGING 
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-# ------------------ DATABASE CONFIG ------------------
-# ⚠️ NO localhost defaults in production
+#  DATABASE CONFIG 
 DATABASE_URL = os.getenv("MYSQL_PUBLIC_URL")
 
 if not DATABASE_URL:
@@ -72,7 +71,7 @@ def get_db_connection():
         if conn and conn.is_connected():
             conn.close()
 
-# ------------------ MODELS ------------------
+#  MODELS 
 
 class Employee(BaseModel):
     employee_id: str
@@ -99,7 +98,7 @@ class Attendance(BaseModel):
             raise ValueError("Status must be Present or Absent")
         return v
 
-# ------------------ ROUTES ------------------
+#  ROUTES 
 
 @app.get("/")
 def root():
@@ -114,7 +113,7 @@ def health_check():
         cursor.close()
     return {"status": "healthy", "db": "connected"}
 
-# -------- EMPLOYEES --------
+#  EMPLOYEES 
 
 @app.post("/api/employees")
 def create_employee(employee: Employee):
@@ -166,7 +165,7 @@ def delete_employee(employee_id: str):
         cursor.close()
     return {"message": "Employee deleted"}
 
-# -------- ATTENDANCE --------
+# ATTENDANCE 
 
 @app.post("/api/attendance")
 def mark_attendance(attendance: Attendance):
@@ -207,7 +206,7 @@ def get_all_attendance():
         cursor.close()
     return data
 
-# -------- STATS --------
+#  STATS 
 
 @app.get("/api/stats")
 def get_stats():

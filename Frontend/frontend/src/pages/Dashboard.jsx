@@ -21,7 +21,6 @@ const Dashboard = () => {
       setLoading(true);
       setError('');
 
-      // ✅ SEQUENTIAL API CALLS (IMPORTANT)
       const statsRes = await getStats();
       setStats(statsRes.data);
 
