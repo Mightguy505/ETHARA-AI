@@ -18,7 +18,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://ethara-ai-s48k.vercel.app",
+        "https://ethara-ai-s48k.vercel.app", "*"
     ],
     allow_credentials=True,
     allow_methods=["*"],
